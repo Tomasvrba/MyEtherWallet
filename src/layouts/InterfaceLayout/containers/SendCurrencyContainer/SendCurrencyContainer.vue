@@ -1,14 +1,16 @@
 <template>
   <div class="nft-manager">
     <interface-container-title title="NFT Manager" />
-    <div class="mft-manager-content-container">
+    <div class="flex--row--align-start mft-manager-content-container">
       <div class="side-menu">
         <input-search class="input-search-container">
           <input type="text" placeholder="Search the number" />
         </input-search>
         <nft-side-menu :data="sideMenuData" />
       </div>
-      <div></div>
+      <div class="content-block flex--grow-1">
+        <crypto-kitties />
+      </div>
     </div>
   </div>
 </template>
@@ -16,12 +18,14 @@
 <script>
 import InterfaceContainerTitle from '../../components/InterfaceContainerTitle';
 import NftSideMenu from './components/NftSideMenu';
+import CryptoKitties from './containers/CryptoKitties';
 import InputSearch from '@/components/Inputs/InputSearch';
 
 export default {
   components: {
     'interface-container-title': InterfaceContainerTitle,
     'nft-side-menu': NftSideMenu,
+    'crypto-kitties': CryptoKitties,
     'input-search': InputSearch
   },
   props: {

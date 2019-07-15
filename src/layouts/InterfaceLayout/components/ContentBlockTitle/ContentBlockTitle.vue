@@ -1,5 +1,10 @@
 <template>
-  <ul class="container-title"></ul>
+  <div class="flex--row--align-center content-block-title">
+    <h4>{{ title }}</h4>
+    <div class="margin--left--auto">
+      <p>{{ buttonText }}</p>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -10,7 +15,7 @@ export default {
       type: String,
       default: ''
     },
-    titleInfo: {
+    buttonText: {
       type: String,
       default: ''
     }
@@ -26,5 +31,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import 'ContainerTitle.scss';
+@import 'ContentBlockTitle.scss';
 </style>
