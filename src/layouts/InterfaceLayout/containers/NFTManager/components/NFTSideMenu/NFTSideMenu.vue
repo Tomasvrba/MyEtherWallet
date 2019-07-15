@@ -32,5 +32,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import 'NftSideMenu.scss';
+@import 'NFTSideMenu.scss';
 </style>

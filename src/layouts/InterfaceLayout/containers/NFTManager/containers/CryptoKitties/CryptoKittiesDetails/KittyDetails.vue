@@ -1,9 +1,6 @@
 <template>
   <div class="crypto-kitties">
-    <content-block-title
-      title="CryptoKittes"
-      button-text="You own 5 CryptoKitties"
-    />
+    <content-block-title :button-text="kittyCount" title="CryptoKittes" />
     <div class="grid-container">
       <div v-for="kitty in kitties" :key="kitty.key" class="kitty">
         <div class="kitty-img"><img :src="kitty.img" /></div>
@@ -49,12 +46,16 @@ export default {
     };
   },
 
-  computed: {},
+  computed: {
+    kittyCount() {
+      return 'You own ' + this.kitties.length + ' CryptoKitties';
+    }
+  },
   watch: {},
   mounted() {}
 };
 </script>
 
 <style lang="scss" scoped>
-@import 'CryptoKitties.scss';
+@import 'KittyDetails.scss';
 </style>

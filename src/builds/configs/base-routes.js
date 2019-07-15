@@ -17,6 +17,8 @@ const DeployContractContainer = () =>
   import('@/layouts/InterfaceLayout/containers/DeployContractContainer');
 const InteractWithContractContainer = () =>
   import('@/layouts/InterfaceLayout/containers/InteractWithContractContainer');
+const NFTManager = () =>
+  import('@/layouts/InterfaceLayout/containers/NFTManager');
 const SendCurrencyContainer = () =>
   import('@/layouts/InterfaceLayout/containers/SendCurrencyContainer');
 const SendOfflineContainer = () =>
@@ -146,6 +148,11 @@ const router = [
         path: 'verify-message',
         name: 'Verify Message',
         component: VerifyMessageContainer
+      },
+      {
+        path: 'nft-manager',
+        name: 'NFTManager',
+        component: NFTManager
       }
     ]
   }
