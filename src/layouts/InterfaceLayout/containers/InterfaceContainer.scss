@@ -1,4 +1,4 @@
-@import '~@/scss/GlobalVariables';
+@import "~@/scss/GlobalVariables";
 
 .form-content-container {
   // Desktop
@@ -59,4 +59,10 @@
 .select-contract .dropdown-toggle {
   border: 0;
   display: none;
+}
+
+.inner-side-menu {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  grid-gap: 40px;
 }

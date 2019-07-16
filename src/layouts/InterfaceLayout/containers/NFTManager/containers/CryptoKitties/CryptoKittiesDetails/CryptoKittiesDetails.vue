@@ -14,7 +14,9 @@
       </div>
       <div class="address-input-container">
         <address-selector title="To Address" />
-        <standard-button :options="sendButton" class="send-button" />
+        <div class="send-button-container">
+          <standard-button :options="sendButton" />
+        </div>
       </div>
     </div>
   </div>
@@ -50,7 +52,9 @@ export default {
       sendButton: {
         title: 'Send',
         buttonStyle: 'green',
-        helpCenter: true
+        helpCenter: true,
+        noMinWidth: true,
+        fullWidth: true
       }
     };
   },

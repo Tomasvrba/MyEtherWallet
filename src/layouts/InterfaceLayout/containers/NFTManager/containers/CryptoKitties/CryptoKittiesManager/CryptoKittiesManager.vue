@@ -1,17 +1,21 @@
 <template>
-  <div class="crypto-kitties side-menu">
-    <nft-side-menu :data="sideMenuData">
-      <input type="text" placeholder="Search the number" />
-    </nft-side-menu>
-    <div>
-      <content-block-title :button-text="kittyCount" title="CryptoKittes" />
-      <div class="grid-container">
-        <div v-for="kitty in kitties" :key="kitty.key" class="kitty">
-          <div class="kitty-img"><img :src="kitty.img" /></div>
-          <p>#{{ kitty.number }}</p>
+  <div class="crypto-kitties">
+    <interface-container-title title="NFT Manager" />
+    <div class="inner-side-menu">
+      <nft-side-menu :data="sideMenuData">
+        <input type="text" placeholder="Search the number" />
+      </nft-side-menu>
+      <div>
+        <content-block-title :button-text="kittyCount" title="CryptoKittes" />
+        <div class="grid-container">
+          <div v-for="kitty in kitties" :key="kitty.key" class="kitty">
+            <div class="kitty-img"><img :src="kitty.img" /></div>
+            <p>#{{ kitty.number }}</p>
+          </div>
         </div>
       </div>
     </div>
+    <div class="flex--row--align-start mft-manager-content-container"></div>
   </div>
 </template>
 

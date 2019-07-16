@@ -18,7 +18,9 @@ const DeployContractContainer = () =>
 const InteractWithContractContainer = () =>
   import('@/layouts/InterfaceLayout/containers/InteractWithContractContainer');
 const NFTManager = () =>
-  import('@/layouts/InterfaceLayout/containers/NFTManager');
+  import(
+    '@/layouts/InterfaceLayout/containers/NFTManager/containers/CryptoKitties/CryptoKittiesManager'
+  );
 const CryptoKittiesDetails = () =>
   import(
     '@/layouts/InterfaceLayout/containers/NFTManager/containers/CryptoKitties/CryptoKittiesDetails'
