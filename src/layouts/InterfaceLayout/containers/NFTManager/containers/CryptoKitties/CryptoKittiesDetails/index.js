@@ -1,1 +1,1 @@
-export { default } from './KittyDetails';
+export { default } from './CryptoKittiesDetails';

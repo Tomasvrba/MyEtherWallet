@@ -1,0 +1,10 @@
+//@import '~@/scss/GlobalVariables';
+@import "../../../../InterfaceContainer";
+
+.crypto-kitties-details {
+  @extend %interface-container;
+}
+
+.crypto-kitties-details-content-container {
+  padding: 30px;
+}

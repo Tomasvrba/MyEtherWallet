@@ -19,7 +19,7 @@
 import ContentBlockTitle from '@/layouts/InterfaceLayout/components/ContentBlockTitle';
 import NFTSideMenu from '@/layouts/InterfaceLayout/containers/NFTManager/components/NFTSideMenu';
 
-// Please remove these images after "NFT Manager" development is done!
+// Please remove these images after "NFT Manager" development is done. (@/assets/images/temp)
 import kitty1 from '@/assets/images/temp/kitty1.svg';
 import kitty2 from '@/assets/images/temp/kitty2.svg';
 import kitty3 from '@/assets/images/temp/kitty3.svg';
