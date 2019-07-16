@@ -1,9 +1,9 @@
 <template>
-  <div class="crypto-kitties">
+  <div class="crypto-kitties-manager">
     <interface-container-title title="NFT Manager" />
-    <div class="inner-side-menu">
+    <div class="inner-side-menu content-container">
       <nft-side-menu :data="sideMenuData">
-        <input type="text" placeholder="Search the number" />
+        <input type="text" placeholder="Search #" />
       </nft-side-menu>
       <div>
         <content-block-title :button-text="kittyCount" title="CryptoKittes" />

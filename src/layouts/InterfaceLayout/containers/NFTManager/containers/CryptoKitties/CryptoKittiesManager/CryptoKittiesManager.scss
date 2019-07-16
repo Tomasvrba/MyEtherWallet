@@ -2,8 +2,15 @@
 
 $collepse-width: 1300px;
 
-.crypto-kitties {
+.crypto-kitties-manager {
   @extend %interface-container;
+}
+
+.content-container {
+  padding: 40px;
+  @media all and (max-width: 700px) {
+    padding: 10px;
+  }
 }
 
 .grid-container {
