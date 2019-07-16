@@ -27,30 +27,7 @@ export default {
     }
   },
   data() {
-    return {
-      sideMenuData: [
-        {
-          title: 'CryptoKitties',
-          count: 5,
-          selected: true
-        },
-        {
-          title: 'Gods Unchained',
-          count: 2,
-          selected: false
-        },
-        {
-          title: 'CryptoFlowers',
-          count: 0,
-          selected: false
-        },
-        {
-          title: 'MyCryptoHeros',
-          count: 7,
-          selected: false
-        }
-      ]
-    };
+    return {};
   },
 
   computed: {},

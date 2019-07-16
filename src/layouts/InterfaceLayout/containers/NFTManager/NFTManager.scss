@@ -1,4 +1,4 @@
-@import '../InterfaceContainer';
+@import "../InterfaceContainer";
 
 .nft-manager {
   @extend %interface-container;
@@ -6,15 +6,6 @@
 
 .mft-manager-content-container {
   padding: 40px;
-}
-
-.side-menu {
-  width: 230px;
-  margin-right: 40px;
-}
-
-.input-search-container {
-  margin-bottom: 25px;
 }
 
 .content-block {

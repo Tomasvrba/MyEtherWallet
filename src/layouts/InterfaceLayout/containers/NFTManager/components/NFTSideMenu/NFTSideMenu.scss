@@ -1,8 +1,12 @@
-@import '~@/scss/GlobalVariables';
+@import "~@/scss/GlobalVariables";
+
+.input-search-container {
+  margin-bottom: 30px;
+}
 
 ul {
   li {
-    padding: 10px 20px;
+    padding: 15px 20px;
     color: $dark-grey-7;
     cursor: pointer;
     user-select: none;
