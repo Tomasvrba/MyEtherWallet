@@ -3,6 +3,15 @@
     <interface-container-title title="NFT Manager" />
     <div class="crypto-kitties-details-content-container">
       <back-button />
+      <div class="grid-container">
+        <div class="kitty-image">
+          <img :src="kitty.img" />
+        </div>
+        <div class="kitty-text">
+          <h3>Send My CryptoKitty</h3>
+          <p>{{ kitty.number }}</p>
+        </div>
+      </div>
     </div>
   </div>
 </template>

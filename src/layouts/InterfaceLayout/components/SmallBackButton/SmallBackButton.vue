@@ -1,6 +1,6 @@
 <template>
-  <div class="small-back-button" @click.prevent="back">
-    <p>&#60; {{ $t('common.back') }}</p>
+  <div class="small-back-button">
+    <p @click.prevent="back">&#60; {{ $t('common.back') }}</p>
   </div>
 </template>
 

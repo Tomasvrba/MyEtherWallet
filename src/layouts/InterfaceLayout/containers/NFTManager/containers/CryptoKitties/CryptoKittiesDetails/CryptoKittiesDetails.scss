@@ -8,3 +8,23 @@
 .crypto-kitties-details-content-container {
   padding: 30px;
 }
+
+.grid-container {
+  display: grid;
+  grid-gap: 20px;
+  grid-template-columns: 250px auto;
+  align-content: center;
+  justify-content: center;
+}
+
+.kitty-image {
+  img {
+    width: 100%;
+  }
+}
+
+.kitty-text {
+  h3 {
+    font-weight: 600;
+  }
+}
