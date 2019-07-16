@@ -1,5 +1,5 @@
 //@import '~@/scss/GlobalVariables';
-@import '../../../../InterfaceContainer';
+@import "../../../../InterfaceContainer";
 
 .crypto-kitties-details {
   @extend %interface-container;
@@ -12,7 +12,7 @@
 .grid-container {
   display: grid;
   grid-gap: 20px;
-  grid-template-columns: 250px auto;
+  grid-template-columns: 350px auto;
   align-content: center;
   justify-content: center;
 }
@@ -24,7 +24,19 @@
 }
 
 .kitty-text {
+  margin: auto 0;
   h3 {
     font-weight: 600;
+    margin-bottom: 10px;
   }
+}
+
+.address-input-container {
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.send-button {
+  margin-top: 40px;
 }
