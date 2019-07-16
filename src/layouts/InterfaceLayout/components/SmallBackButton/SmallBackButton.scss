@@ -1,10 +1,7 @@
 @import "~@/scss/GlobalVariables";
 
-.small-back-button {
-  cursor: pointer;
-}
-
 p {
+  cursor: pointer;
   color: $dark-blue-2;
   font-weight: 500;
   display: inline;
