@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import ContentBlockTitle from '../../../../components/ContentBlockTitle';
+import ContentBlockTitle from '@/layouts/InterfaceLayout/components/ContentBlockTitle';
 
 // Please remove these images after "NFT Manager" development is done!
 import kitty1 from '@/assets/images/temp/kitty1.svg';

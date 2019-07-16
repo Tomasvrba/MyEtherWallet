@@ -19,6 +19,10 @@ const InteractWithContractContainer = () =>
   import('@/layouts/InterfaceLayout/containers/InteractWithContractContainer');
 const NFTManager = () =>
   import('@/layouts/InterfaceLayout/containers/NFTManager');
+const CryptoKittiesDetails = () =>
+  import(
+    '@/layouts/InterfaceLayout/containers/NFTManager/containers/CryptoKitties/CryptoKittiesDetails'
+  );
 const SendCurrencyContainer = () =>
   import('@/layouts/InterfaceLayout/containers/SendCurrencyContainer');
 const SendOfflineContainer = () =>
@@ -153,6 +157,11 @@ const router = [
         path: 'nft-manager',
         name: 'NFTManager',
         component: NFTManager
+      },
+      {
+        path: 'crypto-kitties-details',
+        name: 'CryptoKittiesDetails',
+        component: CryptoKittiesDetails
       }
     ]
   }
