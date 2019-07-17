@@ -1,5 +1,5 @@
 //@import '~@/scss/GlobalVariables';
-@import '../../../../InterfaceContainer';
+@import "../../../../InterfaceContainer";
 
 $collepse-width: 650px;
 
@@ -22,6 +22,7 @@ $collepse-width: 650px;
   @media all and (max-width: $collepse-width) {
     flex-direction: column-reverse;
     margin-top: 20px;
+    padding: 0 15px;
   }
 }
 
