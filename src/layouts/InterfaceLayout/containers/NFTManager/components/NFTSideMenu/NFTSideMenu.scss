@@ -1,4 +1,4 @@
-@import "~@/scss/GlobalVariables";
+@import '~@/scss/GlobalVariables';
 
 $collepse-width: $nft-mobile-width;
 
@@ -31,6 +31,7 @@ $collepse-width: $nft-mobile-width;
   @media all and (max-width: $collepse-width) {
     display: block;
   }
+
   display: none;
   .input-search-container {
     margin-bottom: 15px;
