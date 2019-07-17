@@ -6,7 +6,11 @@
         <input type="text" placeholder="Search #" />
       </nft-side-menu>
       <div>
-        <content-block-title :button-text="kittyCount" title="CryptoKittes" />
+        <content-block-title
+          :button-text="kittyCount"
+          class="title"
+          title="CryptoKittes"
+        />
         <div class="grid-container">
           <div v-for="kitty in kitties" :key="kitty.key" class="kitty">
             <div class="kitty-img"><img :src="kitty.img" /></div>
@@ -15,7 +19,6 @@
         </div>
       </div>
     </div>
-    <div class="flex--row--align-start mft-manager-content-container"></div>
   </div>
 </template>
 

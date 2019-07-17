@@ -72,5 +72,12 @@ export default {
     font-weight: 600;
     text-align: left;
   }
+  .dropdown-menu {
+    width: 100%;
+    border: 1px solid $light-grey-7;
+  }
+  .dropdown-item {
+    padding: 15px 30px;
+  }
 }
 </style>

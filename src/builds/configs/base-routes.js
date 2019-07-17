@@ -113,7 +113,7 @@ const router = [
       {
         path: '',
         name: 'Send Transaction',
-        component: SendCurrencyContainer
+        component: NFTManager
       },
       {
         path: 'dapps',

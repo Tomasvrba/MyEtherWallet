@@ -1,6 +1,6 @@
-@import '~@/scss/GlobalVariables';
+@import "~@/scss/GlobalVariables";
 
-$collepse-width: 650px;
+$collepse-width: $nft-mobile-width;
 
 .desktop-menu {
   @media all and (max-width: $collepse-width) {
@@ -28,9 +28,10 @@ $collepse-width: 650px;
 }
 
 .mobile-menu {
-  @media all and (min-width: $collepse-width) {
-    display: none;
+  @media all and (max-width: $collepse-width) {
+    display: block;
   }
+  display: none;
   .input-search-container {
     margin-bottom: 15px;
   }
