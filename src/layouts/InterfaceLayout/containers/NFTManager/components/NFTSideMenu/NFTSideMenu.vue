@@ -18,11 +18,10 @@
       <input-search class="input-search-container">
         <slot />
       </input-search>
-      <b-dropdown text="Button text via Prop">
+      <b-dropdown text="CryptoKitties (5)">
         <b-dropdown-item v-for="i in data" :key="i.key" href="#">
-          An item
+          {{ i.title }} ({{ i.count }})
         </b-dropdown-item>
-        <b-dropdown-item href="#">Another item</b-dropdown-item>
       </b-dropdown>
     </div>
   </div>
@@ -63,7 +62,8 @@ export default {
   .btn-group {
     width: 100%;
   }
-  .btn-secondary {
+  .btn-secondary,
+  .btn-secondary:active {
     background-color: white;
     color: $dark-blue-2;
     border: 1px solid $light-grey-7;
