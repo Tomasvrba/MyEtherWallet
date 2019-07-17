@@ -20,6 +20,7 @@
 </template>
 
 <script>
+import InterfaceContainerTitle from '@/layouts/InterfaceLayout/components/InterfaceContainerTitle';
 import ContentBlockTitle from '@/layouts/InterfaceLayout/components/ContentBlockTitle';
 import NFTSideMenu from '@/layouts/InterfaceLayout/containers/NFTManager/components/NFTSideMenu';
 
@@ -34,7 +35,8 @@ import kitty6 from '@/assets/images/temp/kitty6.svg';
 export default {
   components: {
     'content-block-title': ContentBlockTitle,
-    'nft-side-menu': NFTSideMenu
+    'nft-side-menu': NFTSideMenu,
+    'interface-container-title': InterfaceContainerTitle
   },
   props: {
     data: {
