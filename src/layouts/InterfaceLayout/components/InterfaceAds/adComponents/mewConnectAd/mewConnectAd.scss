@@ -1,4 +1,4 @@
-@import '~@/scss/GlobalVariables';
+@import "~@/scss/GlobalVariables";
 
 .content-block {
   position: relative;
@@ -21,12 +21,19 @@
       font-size: 1.7vw;
       font-weight: 600;
       margin-bottom: 5px;
+      @media all and (min-width: 2000px) {
+        font-size: 37px;
+      }
     }
 
     p {
       font-size: 1vw;
       font-weight: 400;
       line-height: 1.3vw;
+      @media all and (min-width: 2000px) {
+        font-size: 25px;
+        line-height: 31px;
+      }
     }
   }
 }
