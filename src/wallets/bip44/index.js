@@ -2,6 +2,7 @@ import {
   LEDGER,
   TREZOR,
   BITBOX,
+  BITBOX02,
   SECALOT,
   KEEPKEY,
   MNEMONIC
@@ -17,6 +18,7 @@ export default {
   [LEDGER]: ledgerPaths,
   [TREZOR]: trezorPaths,
   [BITBOX]: bitboxPaths,
+  [BITBOX02]: bitboxPaths,
   [SECALOT]: secalotPaths,
   [KEEPKEY]: keepkeyPaths,
   [MNEMONIC]: mnemonicPaths

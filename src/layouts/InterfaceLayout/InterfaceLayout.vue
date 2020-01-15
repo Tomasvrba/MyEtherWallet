@@ -148,6 +148,7 @@ import {
   LEDGER as LEDGER_TYPE,
   TREZOR as TREZOR_TYPE,
   BITBOX as BITBOX_TYPE,
+  BITBOX02 as BITBOX02_TYPE,
   SECALOT as SECALOT_TYPE,
   KEEPKEY as KEEPKEY_TYPE,
   MNEMONIC as MNEMONIC_TYPE
@@ -322,6 +323,9 @@ export default {
             .catch(TrezorWallet.errorHandler);
           break;
         case BITBOX_TYPE:
+          this.togglePasswordModal(BitBoxWallet, 'BitBox');
+          break;
+        case BITBOX02_TYPE:
           this.togglePasswordModal(BitBoxWallet, 'BitBox');
           break;
         case SECALOT_TYPE:

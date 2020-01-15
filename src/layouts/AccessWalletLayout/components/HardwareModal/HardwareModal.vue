@@ -67,6 +67,7 @@ import {
   LEDGER as LEDGER_TYPE,
   TREZOR as TREZOR_TYPE,
   BITBOX as BITBOX_TYPE,
+  BITBOX02 as BITBOX02_TYPE,
   SECALOT as SECALOT_TYPE,
   KEEPKEY as KEEPKEY_TYPE,
   XWALLET as XWALLET_TYPE
@@ -125,6 +126,14 @@ export default {
           name: BITBOX_TYPE,
           imgPath: bitbox,
           text: 'BitBox',
+          disabled: false,
+          msg: '',
+          link: 'https://shiftcrypto.ch/?ref=mew'
+        },
+        {
+          name: BITBOX02_TYPE,
+          imgPath: bitbox,
+          text: 'BitBox02',
           disabled: false,
           msg: '',
           link: 'https://shiftcrypto.ch/?ref=mew'
@@ -229,6 +238,12 @@ export default {
             });
           break;
         case BITBOX_TYPE:
+          this.$emit('hardwareRequiresPassword', {
+            walletConstructor: BitBoxWallet,
+            hardwareBrand: 'BitBox'
+          });
+          break;
+        case BITBOX02_TYPE:
           this.$emit('hardwareRequiresPassword', {
             walletConstructor: BitBoxWallet,
             hardwareBrand: 'BitBox'
