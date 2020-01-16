@@ -10,6 +10,11 @@
       :networks="Networks"
       @hardwareWalletOpen="toggleNetworkAddrModal"
     />
+    <bitbox-02-modal
+      ref="bitbox02Modal"
+      :networks="Networks"
+      @hardwareWalletOpen="toggleNetworkAddrModal"
+    />
     <mnemonic-modal
       ref="mnemonicPhraseModal"
       :hardware-wallet-open="toggleNetworkAddrModal"
@@ -118,6 +123,7 @@ import HardwarePasswordModal from '@/layouts/AccessWalletLayout/components/Hardw
 import MnemonicPasswordModal from '@/layouts/AccessWalletLayout/components/MnemonicPasswordModal';
 import MnemonicModal from '@/layouts/AccessWalletLayout/components/MnemonicModal';
 import LedgerAppModal from '@/layouts/AccessWalletLayout/components/LedgerAppModal';
+// import BitBox02Modal from '@/layouts/AccessWalletLayout/components/BitBox02Modal';
 import InterfaceAddress from './components/InterfaceAddress';
 import InterfaceBalance from './components/InterfaceBalance';
 import InterfaceNetwork from './components/InterfaceNetwork';
@@ -148,7 +154,7 @@ import {
   LEDGER as LEDGER_TYPE,
   TREZOR as TREZOR_TYPE,
   BITBOX as BITBOX_TYPE,
-  BITBOX02 as BITBOX02_TYPE,
+  // BITBOX02 as BITBOX02_TYPE,
   SECALOT as SECALOT_TYPE,
   KEEPKEY as KEEPKEY_TYPE,
   MNEMONIC as MNEMONIC_TYPE
@@ -170,7 +176,8 @@ export default {
     'enter-pin-number-modal': EnterPinNumberModal,
     'mobile-interface-address': MobileInterfaceAddress,
     'address-qrcode-modal': AddressQrcodeModal,
-    'ledger-app-modal': LedgerAppModal
+    'ledger-app-modal': LedgerAppModal,
+    // 'bitbox-02-modal': BitBox02Modal
   },
   data() {
     return {
@@ -310,6 +317,9 @@ export default {
     ledgerAppModalOpen() {
       this.$refs.ledgerAppModal.$refs.ledgerApp.show();
     },
+    // bitbox02ModalOpen() {
+    //   this.$refs.bitbox02Modal.$refs.bitbox02.show();
+    // },
     switchAddress() {
       switch (this.account.identifier) {
         case LEDGER_TYPE:
@@ -325,9 +335,9 @@ export default {
         case BITBOX_TYPE:
           this.togglePasswordModal(BitBoxWallet, 'BitBox');
           break;
-        case BITBOX02_TYPE:
-          this.togglePasswordModal(BitBoxWallet, 'BitBox');
-          break;
+        // case BITBOX02_TYPE:
+        //   this.bitbox02ModalOpen();
+        //   break;
         case SECALOT_TYPE:
           this.togglePasswordModal(SecalotWallet, 'Secalot');
           break;

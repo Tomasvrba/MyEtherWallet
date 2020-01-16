@@ -10,12 +10,15 @@
       :network-and-address-open="networkAndAddressOpen"
     />
 
+    <bitbox-modal ref="bitbox" />
+
     <hardware-modal
       ref="hardwareModal"
       :ledger-app-open="ledgerAppModalOpen"
       :network-and-address-open="networkAndAddressOpen"
       :open-finney="finneyModalOpen"
       :open-xwallet="xwalletModalOpen"
+      :bitbox-open="bitbox02ModalOpen"
       @hardwareRequiresPassword="hardwarePasswordModalOpen"
       @hardwareWalletOpen="hardwareWalletOpen"
     />
@@ -104,6 +107,7 @@ import PrivateKeyModal from '../../components/PrivateKeyModal';
 import SoftwareModal from '../../components/SoftwareModal';
 import MnemonicModal from '../../components/MnemonicModal';
 import LedgerAppModal from '../../components/LedgerAppModal';
+import BitBox02Modal from '../../components/BitBox02Modal';
 import WalletPasswordModal from '@/components/WalletPasswordModal';
 import EnterPinNumberModal from '@/components/EnterPinNumberModal';
 import XwalletModal from '../../components/XwalletModal';
@@ -139,7 +143,8 @@ export default {
     'enter-pin-number-modal': EnterPinNumberModal,
     'ledger-app-modal': LedgerAppModal,
     'finney-modal': FinneyModal,
-    'xwallet-modal': XwalletModal
+    'xwallet-modal': XwalletModal,
+    'bitbox-modal': BitBox02Modal
   },
   data() {
     return {
@@ -236,6 +241,9 @@ export default {
     },
     ledgerAppModalOpen() {
       this.$refs.ledgerAppModal.$refs.ledgerApp.show();
+    },
+    bitbox02ModalOpen() {
+      this.$refs.bitbox.$refs.bitboxModal.show();
     },
     networkAndAddressOpen() {
       this.$refs.networkandaddressModal.$refs.networkAndAddress.show();

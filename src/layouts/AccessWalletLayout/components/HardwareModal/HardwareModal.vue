@@ -97,6 +97,10 @@ export default {
     openXwallet: {
       type: Function,
       default: function() {}
+    },
+    bitboxOpen: {
+      type: Function,
+      default: function() {}
     }
   },
   data() {
@@ -244,10 +248,8 @@ export default {
           });
           break;
         case BITBOX02_TYPE:
-          this.$emit('hardwareRequiresPassword', {
-            walletConstructor: BitBoxWallet,
-            hardwareBrand: 'BitBox'
-          });
+          this.bitboxOpen();
+          this.$refs.hardware.hide();
           break;
         case SECALOT_TYPE:
           this.$emit('hardwareRequiresPassword', {
