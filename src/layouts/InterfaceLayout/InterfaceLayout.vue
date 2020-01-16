@@ -176,7 +176,7 @@ export default {
     'enter-pin-number-modal': EnterPinNumberModal,
     'mobile-interface-address': MobileInterfaceAddress,
     'address-qrcode-modal': AddressQrcodeModal,
-    'ledger-app-modal': LedgerAppModal,
+    'ledger-app-modal': LedgerAppModal
     // 'bitbox-02-modal': BitBox02Modal
   },
   data() {

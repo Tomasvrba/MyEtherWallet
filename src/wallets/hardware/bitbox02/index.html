@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>title</title>
+        <link rel="stylesheet" href="style.css">
+        <script type="module" src="demo.js"></script>
+    </head>
+    <body>
+        <p>
+            The BitBoxBridge must be running, and one BitBox02 plugged in.
+        </p>
+        <button id="demo" autocomplete="off">Run demo</button>
+        <iframe id="bbFrame" src="iframe.html" style="display:none;"></iframe>
+        <div id="initialized" style="display:none;">
+            <button id="btcPub" autocomplete="off">BTC address</button>
+            <button id="ethPub" autocomplete="off">ETH address</button>
+            <button id="ethSign" autocomplete="off">ETH sign</button>
+        </div>
+    </body>
+</html>
