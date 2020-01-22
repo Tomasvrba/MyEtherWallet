@@ -1,26 +1,9 @@
-import './bitbox02-api-go.js';
+/* eslint-disable no-unused-vars */
+import * as bb02 from './bitbox02-api-go.js';
 
-export const api = bitbox02;
+export const api = bb02.bitbox02;
 
 const firmwareAPI = api.firmware;
-
-function hideiFrame() {
-  document.getElementById('bbFrame').style.display = 'none';
-}
-
-function showiFrame(view) {
-  const frame = document.getElementById('bbFrame');
-  const frameContent = frame.contentDocument || frame.contentWindow.document;
-  if (view === 'unlock') {
-    frameContent.getElementById(view).style.display = 'block';
-    frame.style.display = 'block';
-  }
-  if (view === 'pairing') {
-    frameContent.getElementById('unlock').style.display = 'none';
-    frameContent.getElementById(view).style.display = 'block';
-    frame.style.display = 'block';
-  }
-}
 
 export async function getDevicePath() {
   let response;
@@ -76,7 +59,7 @@ export async function connect(
       'ws://127.0.0.1:8178/api/v1/socket/' + devicePath
     );
     socket.binaryType = 'arraybuffer';
-    socket.onopen = async function(event) {
+    socket.onopen = async function(_event) {
       try {
         firmware = firmwareAPI.New(onWrite);
 
@@ -90,15 +73,8 @@ export async function connect(
         firmware.SetOnEvent(ev => {
           if (
             ev === firmwareAPI.Event.StatusChanged &&
-            firmware.Status() == firmwareAPI.Status.Connected
-          ) {
-            showiFrame('unlock');
-          }
-          if (
-            ev === firmwareAPI.Event.StatusChanged &&
             firmware.Status() == firmwareAPI.Status.Unpaired
           ) {
-            showiFrame('pairing');
             const [channelHash] = firmware.ChannelHash();
             showPairing(channelHash);
           }
@@ -109,20 +85,15 @@ export async function connect(
 
         await firmware.js.AsyncInit();
         switch (firmware.Status()) {
-          case firmwareAPI.Status.Connected:
-            showiFrame('unlock');
-            break;
           case firmwareAPI.Status.PairingFailed:
             socket.close();
             throw new Error('pairing rejected; try again');
           case firmwareAPI.Status.Unpaired:
-            showiFrame('pairing');
             await userVerify();
             await firmware.js.AsyncChannelHashVerify(true);
             break;
           case firmwareAPI.Status.Initialized:
             // Pairing skipped.
-            hideiFrame();
             break;
           default:
             throw new Error(
@@ -138,7 +109,7 @@ export async function connect(
         reject(err);
       }
     };
-    socket.onerror = function(event) {
+    socket.onerror = function(_event) {
       reject(
         'Your BitBox02 is busy. Please close all other wallets and try again.'
       );
@@ -146,7 +117,7 @@ export async function connect(
     socket.onmessage = function(event) {
       firmware.js.OnRead(new Uint8Array(event.data));
     };
-    socket.onclose = function(event) {
+    socket.onclose = function(_event) {
       console.log('onclose');
     };
   });

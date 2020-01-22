@@ -61,6 +61,7 @@ import {
   KeepkeyWallet,
   TrezorWallet,
   BitBoxWallet,
+  BitBox02Wallet,
   SecalotWallet
 } from '@/wallets';
 import {
@@ -248,8 +249,16 @@ export default {
           });
           break;
         case BITBOX02_TYPE:
-          this.bitboxOpen();
-          this.$refs.hardware.hide();
+          BitBox02Wallet()
+            .then(_newWallet => {
+              // clearTimeout(showPluggedInReminder);
+              this.$emit('hardwareWalletOpen', _newWallet);
+            })
+            .catch(e => {
+              console.log(e);
+              // this.mayNotBeAttached = true;
+              // TrezorWallet.errorHandler(e);
+            });
           break;
         case SECALOT_TYPE:
           this.$emit('hardwareRequiresPassword', {

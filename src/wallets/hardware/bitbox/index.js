@@ -39,10 +39,13 @@ class BitBoxWallet {
   getAccount(idx) {
     const derivedKey = this.hdKey.derive('m/' + idx);
     const txSigner = async tx => {
+      console.log('before new Transaction, tx: ', tx);
       tx = new Transaction(tx, {
         common: commonGenerator(store.state.network)
       });
       const networkId = tx.getChainId();
+      console.log('after new Transaction, tx: ', tx);
+      console.log('after new Transaction, path: ', this.basePath + '/' + idx);
       const result = await this.bitbox.signTransaction(
         this.basePath + '/' + idx,
         tx
