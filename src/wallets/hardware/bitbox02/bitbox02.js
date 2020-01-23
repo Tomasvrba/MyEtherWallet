@@ -1,7 +1,12 @@
 /* eslint-disable no-unused-vars */
-import * as bb02 from './bitbox02-api-go.js';
+// import * as bb02 from './bitbox02-api-go.js';
+import '../../../../public/bitbox02-api-go.js';
 
-export const api = bb02.bitbox02;
+// const getBB02 = () => import('./bitbox02-api-go.js')
+
+// getBB02().then(bitbox02 => bitbox02)
+
+export const api = bitbox02;
 
 const firmwareAPI = api.firmware;
 
@@ -89,10 +94,12 @@ export async function connect(
             socket.close();
             throw new Error('pairing rejected; try again');
           case firmwareAPI.Status.Unpaired:
+            console.log(' Unpaired')
             await userVerify();
             await firmware.js.AsyncChannelHashVerify(true);
             break;
           case firmwareAPI.Status.Initialized:
+            console.log('paired')
             // Pairing skipped.
             break;
           default:
