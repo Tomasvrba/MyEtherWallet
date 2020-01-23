@@ -61,12 +61,15 @@ import {
   KeepkeyWallet,
   TrezorWallet,
   BitBoxWallet,
+  BitBox02Wallet,
   SecalotWallet
 } from '@/wallets';
+// const getBitBox02Wallet = () => import('@/wallets/hardware/bitbox02');
 import {
   LEDGER as LEDGER_TYPE,
   TREZOR as TREZOR_TYPE,
   BITBOX as BITBOX_TYPE,
+  BITBOX02 as BITBOX02_TYPE,
   SECALOT as SECALOT_TYPE,
   KEEPKEY as KEEPKEY_TYPE,
   XWALLET as XWALLET_TYPE
@@ -125,6 +128,14 @@ export default {
           name: BITBOX_TYPE,
           imgPath: bitbox,
           text: 'BitBox',
+          disabled: false,
+          msg: '',
+          link: 'https://shiftcrypto.ch/?ref=mew'
+        },
+        {
+          name: BITBOX02_TYPE,
+          imgPath: bitbox,
+          text: 'BitBox02',
           disabled: false,
           msg: '',
           link: 'https://shiftcrypto.ch/?ref=mew'
@@ -233,6 +244,19 @@ export default {
             walletConstructor: BitBoxWallet,
             hardwareBrand: 'BitBox'
           });
+          break;
+        case BITBOX02_TYPE:
+          // getBitBox02Wallet().then(bitbox02 => bitbox02);
+          BitBox02Wallet()
+            .then(_newWallet => {
+              // clearTimeout(showPluggedInReminder);
+              this.$emit('hardwareWalletOpen', _newWallet);
+            })
+            .catch(e => {
+              console.log(e);
+              this.mayNotBeAttached = true;
+              // TrezorWallet.errorHandler(e);
+            });
           break;
         case SECALOT_TYPE:
           this.$emit('hardwareRequiresPassword', {

@@ -1,3 +1,5 @@
 /dist/
 /*.js
 /tests/unit/coverage/
+/public/*
+*bitbox*

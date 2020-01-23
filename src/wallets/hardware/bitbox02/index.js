@@ -1,13 +1,15 @@
 import { api, getDevicePath, connect } from './bitbox02.js';
+// eslint-disable-next-line no-unused-vars
+// import { getDevicePath } from './bitbox02.js';
 
-import { BITBOX02 as bitbox02Type } from '../../bip44/walletTypes';
+import { BITBOX as bitboxType } from '../../bip44/walletTypes';
 import bip44Paths from '../../bip44';
 import HDWalletInterface from '@/wallets/HDWalletInterface';
 import * as HDKey from 'hdkey';
 import { Transaction } from 'ethereumjs-tx';
 import {
   getSignTransactionObject,
-  //   getHexTxObject,
+    getHexTxObject,
   getBufferFromHex,
   calculateChainIdFromV
 } from '../../utils';
@@ -22,21 +24,20 @@ const NEED_PASSWORD = false;
 
 class BitBox02Wallet {
   constructor() {
-    this.identifier = bitbox02Type;
+    this.identifier = bitboxType;
     this.isHardware = true;
     this.needPassword = NEED_PASSWORD;
-    this.supportedPaths = bip44Paths[bitbox02Type];
+    this.supportedPaths = bip44Paths[bitboxType];
   }
   async init(basePath) {
     this.basePath = basePath ? basePath : this.supportedPaths[0].path;
-    const bb02firmware = initConnection();
-    if (!bb02firmware) {
-      console.log('no firmware');
-      return;
-    }
-    const rootPub = await getRootPubKey(this.basePath);
-    this.hdKey = new HDKey();
-    this.hdKey.publicKey = Buffer.from(rootPub.publicKey, 'hex');
+    this.bb02firmware = await initConnection();
+    console.log('getting pubkey')
+    const rootPub = await getRootPubKey(this.bb02firmware);
+    console.log('root pub', rootPub);
+    this.hdKey = HDKey.fromExtendedKey(rootPub)
+    console.log('hdkey', this.hdKey);
+    // this.hdKey.publicKey = Buffer.from(rootPub.publicKey, 'hex');
     // this.hdKey.chainCode = Buffer.from(rootPub.chainCode, 'hex');
   }
   getAccount(idx) {
@@ -46,10 +47,14 @@ class BitBox02Wallet {
         common: commonGenerator(store.state.network)
       });
       const networkId = tx.getChainId();
-      //   const options = {
-      //     path: this.basePath + '/' + idx,
-      //     transaction: getHexTxObject(tx)
-      //   };
+      const options = {
+        path: this.basePath + '/' + idx,
+        transaction: getHexTxObject(tx)
+      };
+      console.log("TX-raw: ", tx);
+      console.log("TX-getHexTxObject: ", getHexTxObject(tx));
+      console.log("TX-tx.serialize().toString('hex'): ", tx.serialize().toString('hex'));
+      console.log("Path: ", this.basePath + '/' + idx);
       const result = await bb02Sign();
       if (!result.success) throw new Error(result.payload.error);
       tx.v = getBufferFromHex(result.payload.v);
@@ -70,7 +75,8 @@ class BitBox02Wallet {
       console.log('cannot sign messages', msg);
     };
     const displayAddress = async () => {
-      await displayEthAddress();
+      await displayEthAddress(this.bb02firmware);
+      console.log('addr');
     };
     return new HDWalletInterface(
       this.basePath + '/' + idx,
@@ -98,10 +104,11 @@ const createWallet = async basePath => {
 createWallet.errorHandler = errorHandler;
 
 const getRootPubKey = async firmware => {
+  console.log('In da getRootPubKey')
   const pub = display =>
     firmware.js.AsyncETHPub(
       firmwareAPI.messages.ETHCoin.ETH,
-      [44 + HARDENED, 60 + HARDENED, 0 + HARDENED, 0, 0],
+      [44 + HARDENED, 60 + HARDENED, 0 + HARDENED, 0],
       firmwareAPI.messages.ETHPubRequest_OutputType.XPUB,
       display,
       new Uint8Array()
@@ -112,24 +119,24 @@ const getRootPubKey = async firmware => {
 };
 
 const initConnection = async () => {
+  let firmware
   try {
     const devicePath = await getDevicePath();
     // eslint-disable-next-line no-unused-vars
-    let firmware;
-    return (firmware = await connect(
+    firmware = await connect(
       devicePath,
       pairingCode => {
-        console.log('In da pairing', pairingCode);
+        console.log('pairing', pairingCode);
       },
       () => {
         return new Promise(resolve => {
-          resolve;
-        });
+          setTimeout(resolve, 10000)});
       },
       attestationResult => {
         alert('Attestation check: ' + attestationResult);
       }
-    ));
+    );
+    return firmware
   } catch (err) {
     alert(err);
   }

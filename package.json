@@ -158,7 +158,8 @@
       "multicoin-address-validator",
       "@xkeshi/vue-qrcode",
       "vee-validate",
-      "sass-loader"
+      "sass-loader",
+      "*bitbox*"
     ]
   },
   "license": "MIT",

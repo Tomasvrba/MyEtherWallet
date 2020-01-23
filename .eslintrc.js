@@ -15,6 +15,7 @@ module.exports = {
     'eslint:recommended',
     'plugin:security/recommended'
   ],
+  ignorePatterns: ["**/*bitbox*", "*bitbox*"],
   rules: {
     'no-console': 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
