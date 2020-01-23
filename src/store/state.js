@@ -1,5 +1,4 @@
 import nodeList from '@/networks';
-import darklist from '@/address-darklist/address-darklist.json';
 import store from 'store';
 import { MEW_CX } from '@/builds/configs/types';
 if (store.get('notifications') === undefined) store.set('notifications', {});
@@ -50,7 +49,6 @@ const state = {
   wallet: null,
   web3: {},
   sidemenuOpen: false,
-  darklist: darklist,
   gettingStartedDone: gettingStartedDone,
   blockNumber: 0,
   linkQuery: {},
