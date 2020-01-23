@@ -51,6 +51,10 @@ class TrezorWallet {
       tx.v = getBufferFromHex(result.payload.v);
       tx.r = getBufferFromHex(result.payload.r);
       tx.s = getBufferFromHex(result.payload.s);
+      console.log(result.payload.v);
+      console.log(result.payload.r);
+      console.log(result.payload.s);
+      console.log(tx);
       const signedChainId = calculateChainIdFromV(tx.v);
       if (signedChainId !== networkId)
         throw new Error(
