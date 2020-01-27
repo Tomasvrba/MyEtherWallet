@@ -16,7 +16,7 @@ module.exports = {
     'plugin:security/recommended'
   ],
   rules: {
-    'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+    'no-console': 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'no-else-return': ['error', { allowElseIf: true }],
     'arrow-parens': 'off',
