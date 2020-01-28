@@ -42,7 +42,7 @@ class BitBoxWallet {
       tx = new Transaction(tx, {
         common: commonGenerator(store.state.network)
       });
-      const networkId = tx.getChainId();
+      // const networkId = tx.getChainId();
       const result = await this.bitbox.signTransaction(
         this.basePath + '/' + idx,
         tx

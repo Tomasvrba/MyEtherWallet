@@ -32,13 +32,8 @@ class BitBox02Wallet {
   async init(basePath) {
     this.basePath = basePath ? basePath : this.supportedPaths[0].path;
     this.bb02firmware = await initConnection();
-    console.log('getting pubkey')
     const rootPub = await getRootPubKey(this.bb02firmware);
-    console.log('root pub', rootPub);
     this.hdKey = HDKey.fromExtendedKey(rootPub)
-    console.log('hdkey', this.hdKey);
-    // this.hdKey.publicKey = Buffer.from(rootPub.publicKey, 'hex');
-    // this.hdKey.chainCode = Buffer.from(rootPub.chainCode, 'hex');
   }
   getAccount(idx) {
     const derivedKey = this.hdKey.derive('m/' + idx);
@@ -47,28 +42,53 @@ class BitBox02Wallet {
         common: commonGenerator(store.state.network)
       });
       const networkId = tx.getChainId();
-      const options = {
-        path: this.basePath + '/' + idx,
-        transaction: getHexTxObject(tx)
-      };
-      console.log("TX-raw: ", tx);
-      console.log("TX-getHexTxObject: ", getHexTxObject(tx));
-      console.log("TX-tx.serialize().toString('hex'): ", tx.serialize().toString('hex'));
-      console.log("Path: ", this.basePath + '/' + idx);
-      const result = await bb02Sign();
-      if (!result.success) throw new Error(result.payload.error);
-      tx.v = getBufferFromHex(result.payload.v);
-      tx.r = getBufferFromHex(result.payload.r);
-      tx.s = getBufferFromHex(result.payload.s);
-      const signedChainId = calculateChainIdFromV(tx.v);
-      if (signedChainId !== networkId)
-        throw new Error(
-          'Invalid networkId signature returned. Expected: ' +
-            networkId +
-            ', Got: ' +
-            signedChainId,
-          'InvalidNetworkId'
-        );
+      // let path = 
+      // console.log("TX-raw: ", tx);
+      // console.log("TX-getHexTxObject: ", getHexTxObject(tx));
+      // console.log("Path: ", this.basePath + '/' + idx);
+      // const result = await bb02Sign(this.bb02firmware, idx, tx, path);
+      const toSign = {
+        path: [44 + HARDENED, 60 + HARDENED, 0 + HARDENED, 0, idx],
+        recipient: tx.to,
+        tx: getHexTxObject(tx),
+        data: tx.data
+      }
+      const result = await bb02Sign(this.bb02firmware, toSign);
+      // if (!result) throw new Error('no sig');
+      // tx.v = result.slice(64);
+      // console.log(new Uint8Array([42])) 
+      // console.log(result.slice(0 + 32, 0 + 32 + 32));
+      // console.log(result.slice(0, 0 + 32)) 
+      // console.log(result)
+      // tx.v = new Uint8Array([42]);
+
+      // console.log(tx.r)
+      let r = result.slice(0, 0 + 32);
+      let s = result.slice(0 + 32, 0 + 32 + 32);
+      let v = new Buffer(new Uint8Array([37]))
+      // console.log(r) 
+      try {
+        r = new Buffer(r)
+        s = new Buffer(s)
+        tx.r = r
+        tx.s = s
+        tx.v = v
+      } catch (err) {
+        console.log('err: ', err);
+      }
+      
+      // tx.s = result.slice(0 + 32, 0 + 32 + 32);
+      // console.log(tx)
+      // const signedChainId = calculateChainIdFromV(tx.v);
+      // if (signedChainId !== networkId)
+      //   throw new Error(
+      //     'Invalid networkId signature returned. Expected: ' +
+      //       networkId +
+      //       ', Got: ' +
+      //       signedChainId,
+      //     'InvalidNetworkId'
+      //   );
+      // console.log(tx)
       return getSignTransactionObject(tx);
     };
     const msgSigner = async msg => {
@@ -76,7 +96,6 @@ class BitBox02Wallet {
     };
     const displayAddress = async () => {
       await displayEthAddress(this.bb02firmware);
-      console.log('addr');
     };
     return new HDWalletInterface(
       this.basePath + '/' + idx,
@@ -104,7 +123,6 @@ const createWallet = async basePath => {
 createWallet.errorHandler = errorHandler;
 
 const getRootPubKey = async firmware => {
-  console.log('In da getRootPubKey')
   const pub = display =>
     firmware.js.AsyncETHPub(
       firmwareAPI.messages.ETHCoin.ETH,
@@ -142,40 +160,34 @@ const initConnection = async () => {
   }
 };
 
-const bb02Sign = async firmware => {
+const bb02Sign = async (firmware, toSign) => {
+  let nonce;
+  if (toSign.tx.nonce) {
+    nonce = parseInt(toSign.tx.nonce)
+  } else {
+    nonce = 0;
+  }
+  const gasPrice = parseInt(toSign.tx.gasPrice).toString();
+  const gasLimit = parseInt(toSign.tx.gasLimit);
+  // console.log(toSign)
+  let value = '0'
+  if (toSign.tx.value) {
+    value = parseInt(toSign.tx.value).toString();
+  }
+  let data = new Buffer(toSign.data)
+  // console.log(toSign.path, nonce, gasPrice, gasLimit, toSign.recipient, value, data)
   try {
     const sig = await firmware.js.AsyncETHSign(
       firmwareAPI.messages.ETHCoin.ETH,
-      [44 + HARDENED, 60 + HARDENED, 0 + HARDENED, 0, 0],
-      8156,
-      '6000000000',
-      21000,
-      new Uint8Array([
-        4,
-        242,
-        100,
-        207,
-        52,
-        68,
-        3,
-        19,
-        180,
-        160,
-        25,
-        42,
-        53,
-        40,
-        20,
-        251,
-        233,
-        39,
-        184,
-        133
-      ]),
-      '530564000000000000',
-      new Uint8Array([])
+      toSign.path,
+      nonce,
+      gasPrice,
+      gasLimit,
+      toSign.recipient,
+      value,
+      data
     );
-    console.log(sig);
+    return sig;
   } catch (err) {
     if (firmwareAPI.IsErrorAbort(err)) {
       alert('aborted by user');
@@ -200,3 +212,38 @@ const displayEthAddress = async firmware => {
 };
 
 export default createWallet;
+
+
+// const bb02Sign = async (firmware, toSign) => {
+//   let nonce;
+//   if (toSign.tx.nonce) {
+//     nonce = parseInt(toSign.tx.nonce)
+//   } else {
+//     nonce = 0;
+//   }
+//   const gasPrice = parseInt(toSign.tx.gasPrice).toString();
+//   const gasLimit = parseInt(toSign.tx.gasLimit);
+//   const value = parseInt(toSign.tx.value).toString();
+//   // console.log(nonce, gasPrice, gasLimit, value);
+//   try {
+//     const sig = await firmware.js.AsyncETHSign(
+//       firmwareAPI.messages.ETHCoin.ETH,
+//       path,
+//       8000,
+//       gasPrice,
+//       gasLimit,
+//       tx.to,
+//       value,
+//       // tx.data
+//       new Uint8Array([])
+//     );
+//     console.log(sig);
+//     return sig;
+//   } catch (err) {
+//     if (firmwareAPI.IsErrorAbort(err)) {
+//       alert('aborted by user');
+//     } else {
+//       alert(err.Message);
+//     }
+//   }
+// };

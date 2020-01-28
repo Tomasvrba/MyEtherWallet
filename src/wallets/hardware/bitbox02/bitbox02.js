@@ -94,12 +94,10 @@ export async function connect(
             socket.close();
             throw new Error('pairing rejected; try again');
           case firmwareAPI.Status.Unpaired:
-            console.log(' Unpaired')
             await userVerify();
             await firmware.js.AsyncChannelHashVerify(true);
             break;
           case firmwareAPI.Status.Initialized:
-            console.log('paired')
             // Pairing skipped.
             break;
           default:
