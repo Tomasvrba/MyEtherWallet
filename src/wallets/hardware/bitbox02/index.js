@@ -14,7 +14,6 @@ import errorHandler from './errorHandler';
 import store from '@/store';
 import commonGenerator from '@/helpers/commonGenerator';
 
-const HARDENED = 0x80000000;
 const NEED_PASSWORD = false;
 
 class BitBox02Wallet {
@@ -37,37 +36,25 @@ class BitBox02Wallet {
       });
       const networkId = tx.getChainId();
       const signatureData = {
-        path: [44 + HARDENED, 60 + HARDENED, 0 + HARDENED, 0, idx],
+        account: idx,
         recipient: tx.to,
         tx: getHexTxObject(tx),
         data: tx.data
       }
       const result = await BitBox02API.signTransaction(signatureData);
-      let r = result.slice(0, 0 + 32);
-      let s = result.slice(0 + 32, 0 + 32 + 32);
-      let v = new Buffer(new Uint8Array([37]))
-      try {
-        r = new Buffer(r)
-        s = new Buffer(s)
-        tx.r = r
-        tx.s = s
-        tx.v = v
-      } catch (err) {
-        console.log('err: ', err);
-      }
+      tx.r = result.r
+      tx.s = result.s
+      tx.v = result.v
       
-      // tx.s = result.slice(0 + 32, 0 + 32 + 32);
-      // console.log(tx)
-      // const signedChainId = calculateChainIdFromV(tx.v);
-      // if (signedChainId !== networkId)
-      //   throw new Error(
-      //     'Invalid networkId signature returned. Expected: ' +
-      //       networkId +
-      //       ', Got: ' +
-      //       signedChainId,
-      //     'InvalidNetworkId'
-      //   );
-      // console.log(tx)
+      const signedChainId = calculateChainIdFromV(tx.v);
+      if (signedChainId !== networkId)
+        throw new Error(
+          'Invalid networkId signature returned. Expected: ' +
+            networkId +
+            ', Got: ' +
+            signedChainId,
+          'InvalidNetworkId'
+        );
       return getSignTransactionObject(tx);
     };
     const msgSigner = async msg => {
