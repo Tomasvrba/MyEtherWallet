@@ -1,4 +1,4 @@
-import * as BitBox02API from '../../../../node_modules/aaa-bb02/bitbox02.js';
+import { BitBox02API, getDevicePath } from '../../../../node_modules/aaa-bb02/bitbox02.js';
 
 import { BITBOX as bitboxType } from '../../bip44/walletTypes';
 import bip44Paths from '../../bip44';
@@ -25,9 +25,28 @@ class BitBox02Wallet {
   }
   async init(basePath) {
     this.basePath = basePath ? basePath : this.supportedPaths[0].path;
-    const rootPub = await BitBox02API.getRootPubKey();
-    this.hdKey = HDKey.fromExtendedKey(rootPub)
+    const devicePath = await getDevicePath();
+    this.BitBox02 = new BitBox02API(devicePath);
+
+    await this.BitBox02.connect(
+      pairingCode => {
+        console.log('pairing', pairingCode);
+      },
+      () => {
+        return new Promise(resolve => {
+          setTimeout(resolve, 10000)});
+      },
+      attestationResult => {
+        alert('Attestation check: ' + attestationResult);
+      },
+      () => {
+        console.log('reset');
+      }
+    );
+  const rootPub = await this.BitBox02.getRootPubKey();
+  this.hdKey = HDKey.fromExtendedKey(rootPub)
   }
+
   getAccount(idx) {
     const derivedKey = this.hdKey.derive('m/' + idx);
     const txSigner = async tx => {
@@ -41,7 +60,7 @@ class BitBox02Wallet {
         tx: getHexTxObject(tx),
         data: tx.data
       }
-      const result = await BitBox02API.signTransaction(signatureData);
+      const result = await this.BitBox02.signTransaction(signatureData);
       tx.r = result.r
       tx.s = result.s
       tx.v = result.v
@@ -61,8 +80,7 @@ class BitBox02Wallet {
       console.log('cannot sign messages', msg);
     };
     const displayAddress = async () => {
-      console.log(this.basePath + '/' + idx); 
-      await BitBox02API.displayEthAddress(idx);
+      await this.BitBox02.displayEthAddress(idx);
     };
     return new HDWalletInterface(
       this.basePath + '/' + idx,
