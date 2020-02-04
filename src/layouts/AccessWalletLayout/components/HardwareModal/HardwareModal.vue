@@ -247,15 +247,12 @@ export default {
           break;
         case BITBOX02_TYPE:
           // getBitBox02Wallet().then(bitbox02 => bitbox02);
-          BitBox02Wallet()
+          BitBox02Wallet('', this.$store.dispatch)
             .then(_newWallet => {
-              // clearTimeout(showPluggedInReminder);
               this.$emit('hardwareWalletOpen', _newWallet);
             })
             .catch(e => {
-              console.log(e);
-              this.mayNotBeAttached = true;
-              // TrezorWallet.errorHandler(e);
+              BitBox02Wallet.errorHandler(e);
             });
           break;
         case SECALOT_TYPE:

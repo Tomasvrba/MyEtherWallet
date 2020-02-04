@@ -17,11 +17,12 @@ import commonGenerator from '@/helpers/commonGenerator';
 const NEED_PASSWORD = false;
 
 class BitBox02Wallet {
-  constructor() {
+  constructor(logout) {
     this.identifier = bitboxType;
     this.isHardware = true;
     this.needPassword = NEED_PASSWORD;
     this.supportedPaths = bip44Paths[bitboxType];
+    this.logout = logout;
   }
   async init(basePath) {
     this.basePath = basePath ? basePath : this.supportedPaths[0].path;
@@ -40,11 +41,12 @@ class BitBox02Wallet {
         alert('Attestation check: ' + attestationResult);
       },
       () => {
-        console.log('reset');
+        this.logout('clearWallet');
       }
-    );
-  const rootPub = await this.BitBox02.getRootPubKey();
-  this.hdKey = HDKey.fromExtendedKey(rootPub)
+    )
+
+    const rootPub = await this.BitBox02.getRootPubKey();
+    this.hdKey = HDKey.fromExtendedKey(rootPub)
   }
 
   getAccount(idx) {
@@ -100,8 +102,8 @@ class BitBox02Wallet {
     return this.supportedPaths;
   }
 }
-const createWallet = async basePath => {
-  const _bb02Wallet = new BitBox02Wallet();
+const createWallet = async (basePath, logout) => {
+  const _bb02Wallet = new BitBox02Wallet(logout);
   await _bb02Wallet.init(basePath);
   return _bb02Wallet;
 };
