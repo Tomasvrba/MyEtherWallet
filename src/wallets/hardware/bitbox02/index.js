@@ -1,4 +1,4 @@
-import { BitBox02API, getDevicePath } from '../../../../node_modules/aaa-bb02/bitbox02.js';
+import { BitBox02API, getDevicePath, api } from '../../../../node_modules/aaa-bb02/bitbox02.js';
 
 import { BITBOX as bitboxType } from '../../bip44/walletTypes';
 import bip44Paths from '../../bip44';
@@ -38,15 +38,24 @@ class BitBox02Wallet {
           setTimeout(resolve, 10000)});
       },
       attestationResult => {
-        alert('Attestation check: ' + attestationResult);
+        this.attestation = attestationResult;
       },
       () => {
         this.logout('clearWallet');
       }
     )
 
+    if (this.BitBox02.fw.Product() !== api.common.Product.BitBox02Multi) {
+      throw new Error('Unsupported device');
+    }
+
     const rootPub = await this.BitBox02.getRootPubKey();
-    this.hdKey = HDKey.fromExtendedKey(rootPub)
+    this.hdKey = HDKey.fromExtendedKey(rootPub);
+
+
+    if (!this.attestation) {
+      errorHandler('Attestation failed');
+    }
   }
 
   getAccount(idx) {

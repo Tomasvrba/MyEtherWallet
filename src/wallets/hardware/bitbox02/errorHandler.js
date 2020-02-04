@@ -2,28 +2,32 @@ import { Toast } from '@/helpers';
 import Vue from 'vue';
 
 const ERRORS = {
-  'Popup closed': 'trezorError.popup-closed',
-  'Device disconnected': 'trezorError.device-disconnect',
-  'device disconnected during action': 'trezorError.device-disconnect-action',
-  'Action cancelled by user': 'trezorError.user-cancelled-action',
-  'Permissions not granted': 'trezorError.no-permission',
-  'Device call in progress': 'trezorError.call-in-progress',
-  'Transport is missing': 'trezorError.transport-missing',
-  'EthAppPleaseEnableContractData: Please enable Contract data on the Ethereum app Settings':
-    'trezorError.turn-on-contract-data',
-  Cancelled: 'trezorError.cancelled',
-  'Iframe timeout': 'trezor.iframe-timeout',
-  'Browser not supported': 'trezor.unsupported-browser',
-  'popup failed to open': 'trezor.popup-failed-to-open'
+  'Unexpected': 'bitbox02Error.unexpected',
+  'User abort': 'bitbox02Error.user-abort',
+  'Uninitialized': 'bitbox02Error.not-initialized',
+  'Firmware upgrade required': 'bitbox02Error.upgrade-firmware',
+  'Unsupported firmware': 'bitbox02Error.unsupported-firmware',
+  'Origin not whitelisted': 'bitbox02Error.unsupported-origin',
+  'BitBoxBridge not found': 'bitbox02Error.no-bridge',
+  'Expected one BitBox02': 'bitbox02Error.expected-one',
+  'Pairing rejected': 'bitbox02Error.pairing-rejected',
+  'Your BitBox02 is busy': 'bitbox02Error.busy',
+  'Unsupported device': 'bitbox02Error.unsupported-device'
 };
 
-const WARNING = {};
+const WARNING = {
+  'Attestation failed': 'bitbox02Error.attestation-failed'
+};
 
 export default err => {
   const errorValues = Object.keys(ERRORS);
   const warningValues = Object.keys(WARNING);
   const foundError = errorValues.find(item => {
-    return item.includes(err.message) || item.includes(err);
+    return (
+      item.includes(err.message) ||
+      item.includes(err) ||
+      (err.message && err.message.includes(item)) ||
+      (typeof(err) === 'string' && err.includes(item)));
   });
 
   const foundWarning = warningValues.find(item => {
