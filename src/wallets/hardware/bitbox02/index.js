@@ -13,6 +13,7 @@ import {
 import errorHandler from './errorHandler';
 import store from '@/store';
 import commonGenerator from '@/helpers/commonGenerator';
+import { Misc } from '@/helpers';
 
 const NEED_PASSWORD = false;
 
@@ -52,7 +53,6 @@ class BitBox02Wallet {
     const rootPub = await this.BitBox02.getRootPubKey();
     this.hdKey = HDKey.fromExtendedKey(rootPub);
 
-
     if (!this.attestation) {
       errorHandler('Attestation failed');
     }
@@ -87,12 +87,23 @@ class BitBox02Wallet {
         );
       return getSignTransactionObject(tx);
     };
+
     const msgSigner = async msg => {
-      console.log('cannot sign messages', msg);
+      const result = await this.BitBox02.signMessage({
+        account: idx,
+        message: Misc.toBuffer(msg)
+      });
+      return Buffer.concat([
+        result.r,
+        result.s,
+        result.v
+      ]);
     };
+
     const displayAddress = async () => {
       await this.BitBox02.displayEthAddress(idx);
     };
+
     return new HDWalletInterface(
       this.basePath + '/' + idx,
       derivedKey.publicKey,
@@ -104,13 +115,16 @@ class BitBox02Wallet {
       displayAddress
     );
   }
+
   getCurrentPath() {
     return this.basePath;
   }
+
   getSupportedPaths() {
     return this.supportedPaths;
   }
 }
+
 const createWallet = async (basePath, logout) => {
   const _bb02Wallet = new BitBox02Wallet(logout);
   await _bb02Wallet.init(basePath);
