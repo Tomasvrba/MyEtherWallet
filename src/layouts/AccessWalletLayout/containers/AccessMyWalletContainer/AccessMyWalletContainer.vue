@@ -14,6 +14,7 @@
       ref="hardwareModal"
       :ledger-app-open="ledgerAppModalOpen"
       :network-and-address-open="networkAndAddressOpen"
+      :bitbox-select-open="bitboxSelectModalOpen"
       :open-finney="finneyModalOpen"
       :open-xwallet="xwalletModalOpen"
       @hardwareRequiresPassword="hardwarePasswordModalOpen"
@@ -24,6 +25,12 @@
       ref="hardwarePasswordModal"
       :wallet-constructor="walletConstructor"
       :hardware-brand="hardwareBrand"
+      @hardwareWalletOpen="hardwareWalletOpen"
+    />
+
+    <bitbox-select-modal
+      ref="bitboxSelectModal"
+      @hardwareRequiresPassword="hardwarePasswordModalOpen"
       @hardwareWalletOpen="hardwareWalletOpen"
     />
 
@@ -96,6 +103,7 @@ import FinneyModal from '../../components/FinneyModal';
 import AccessWalletButton from '../../components/AccessWalletButton';
 import HardwareModal from '../../components/HardwareModal';
 import HardwarePasswordModal from '../../components/HardwarePasswordModal';
+import BitboxSelectModal from '../../components/BitboxSelectModal';
 import Web3WalletModal from '../../components/Web3WalletModal';
 import MewConnectModal from '../../components/MewConnectModal';
 import NetworkAndAddressModal from '../../components/NetworkAndAddressModal';
@@ -129,6 +137,7 @@ export default {
     'network-and-address-modal': NetworkAndAddressModal,
     'hardware-modal': HardwareModal,
     'hardware-password-modal': HardwarePasswordModal,
+    'bitbox-select-modal': BitboxSelectModal,
     'metamask-modal': Web3WalletModal,
     'software-modal': SoftwareModal,
     'password-modal': PasswordModal,
@@ -242,6 +251,9 @@ export default {
     },
     hardwareModalOpen() {
       this.$refs.hardwareModal.$refs.hardware.show();
+    },
+    bitboxSelectModalOpen() {
+      this.$refs.bitboxSelectModal.$refs.bitboxSelect.show();
     },
     web3WalletModal() {
       this.checkWeb3();

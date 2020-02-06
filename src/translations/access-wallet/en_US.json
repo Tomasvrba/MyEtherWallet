@@ -29,6 +29,11 @@
     },
     "examples": "Ledger wallet, FINNEY, Trezor, BitBox, Secalot, KeepKey, XWallet"
   },
+  "bitbox": {
+    "modal": {
+      "title": "Select BitBox wallet"
+    }
+  },
   "software": {
     "option-title": "Software",
     "option-text": "Keystore file, Private key, Mnemonic phrase",

@@ -57,19 +57,10 @@ import WalletOption from '../WalletOption';
 import { Toast } from '@/helpers';
 import { isSupported } from 'u2f-api';
 import platform from 'platform';
-import {
-  KeepkeyWallet,
-  TrezorWallet,
-  BitBoxWallet,
-  BitBox02Wallet,
-  SecalotWallet
-} from '@/wallets';
-// const getBitBox02Wallet = () => import('@/wallets/hardware/bitbox02');
+import { KeepkeyWallet, TrezorWallet, SecalotWallet } from '@/wallets';
 import {
   LEDGER as LEDGER_TYPE,
   TREZOR as TREZOR_TYPE,
-  BITBOX as BITBOX_TYPE,
-  BITBOX02 as BITBOX02_TYPE,
   SECALOT as SECALOT_TYPE,
   KEEPKEY as KEEPKEY_TYPE,
   XWALLET as XWALLET_TYPE
@@ -85,6 +76,10 @@ export default {
       default: function() {}
     },
     hardwareWalletOpen: {
+      type: Function,
+      default: function() {}
+    },
+    bitboxSelectOpen: {
       type: Function,
       default: function() {}
     },
@@ -125,17 +120,9 @@ export default {
             'http://shop.sirinlabs.com?rfsn=2397639.54fdf&utm_source=refersion&utm_medium=affiliate&utm_campaign=2397639.54fdf'
         },
         {
-          name: BITBOX_TYPE,
+          name: 'BitBox',
           imgPath: bitbox,
           text: 'BitBox',
-          disabled: false,
-          msg: '',
-          link: 'https://shiftcrypto.ch/?ref=mew'
-        },
-        {
-          name: BITBOX02_TYPE,
-          imgPath: bitbox,
-          text: 'BitBox02',
           disabled: false,
           msg: '',
           link: 'https://shiftcrypto.ch/?ref=mew'
@@ -184,7 +171,7 @@ export default {
   mounted() {
     isSupported().then(res => {
       this.items.forEach(item => {
-        const u2fhw = [SECALOT_TYPE, LEDGER_TYPE, BITBOX_TYPE];
+        const u2fhw = [SECALOT_TYPE, LEDGER_TYPE];
         const inMobile = [SECALOT_TYPE, KEEPKEY_TYPE];
         const webUsb = [KEEPKEY_TYPE, LEDGER_TYPE];
 
@@ -239,21 +226,9 @@ export default {
               TrezorWallet.errorHandler(e);
             });
           break;
-        case BITBOX_TYPE:
-          this.$emit('hardwareRequiresPassword', {
-            walletConstructor: BitBoxWallet,
-            hardwareBrand: 'BitBox'
-          });
-          break;
-        case BITBOX02_TYPE:
-          // getBitBox02Wallet().then(bitbox02 => bitbox02);
-          BitBox02Wallet('', this.$store.dispatch)
-            .then(_newWallet => {
-              this.$emit('hardwareWalletOpen', _newWallet);
-            })
-            .catch(e => {
-              BitBox02Wallet.errorHandler(e);
-            });
+        case 'BitBox':
+          this.bitboxSelectOpen();
+          this.$refs.hardware.hide();
           break;
         case SECALOT_TYPE:
           this.$emit('hardwareRequiresPassword', {
