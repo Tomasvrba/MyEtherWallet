@@ -30,9 +30,12 @@
 
     <bitbox-select-modal
       ref="bitboxSelectModal"
+      @bitbox02Open="bitbox02ModalOpen"
       @hardwareRequiresPassword="hardwarePasswordModalOpen"
       @hardwareWalletOpen="hardwareWalletOpen"
     />
+
+    <bitbox02-modal ref="bitbox02Modal" :device="device" />
 
     <network-and-address-modal
       ref="networkandaddressModal"
@@ -104,6 +107,7 @@ import AccessWalletButton from '../../components/AccessWalletButton';
 import HardwareModal from '../../components/HardwareModal';
 import HardwarePasswordModal from '../../components/HardwarePasswordModal';
 import BitboxSelectModal from '../../components/BitboxSelectModal';
+import Bitbox02Modal from '../../components/Bitbox02Modal';
 import Web3WalletModal from '../../components/Web3WalletModal';
 import MewConnectModal from '../../components/MewConnectModal';
 import NetworkAndAddressModal from '../../components/NetworkAndAddressModal';
@@ -138,6 +142,7 @@ export default {
     'hardware-modal': HardwareModal,
     'hardware-password-modal': HardwarePasswordModal,
     'bitbox-select-modal': BitboxSelectModal,
+    'bitbox02-modal': Bitbox02Modal,
     'metamask-modal': Web3WalletModal,
     'software-modal': SoftwareModal,
     'password-modal': PasswordModal,
@@ -158,6 +163,7 @@ export default {
       hardwareAddresses: [],
       walletConstructor: function() {},
       hardwareBrand: '',
+      device: '',
       buttons: [
         {
           func: this.mewConnectModalOpen,
@@ -254,6 +260,13 @@ export default {
     },
     bitboxSelectModalOpen() {
       this.$refs.bitboxSelectModal.$refs.bitboxSelect.show();
+    },
+    bitbox02ModalOpen(bb02) {
+      // this.bitbox02 = bitbox02.bitbox02;
+      // console.log('bitbox02ModalOpen 2 bb02', bb02);
+      this.device = bb02;
+      // console.log('bitbox02ModalOpen 2 device', this.device);
+      this.$refs.bitbox02Modal.$refs.bitbox02.show();
     },
     web3WalletModal() {
       this.checkWeb3();

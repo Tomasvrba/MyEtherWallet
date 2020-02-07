@@ -67,10 +67,10 @@ export default {
       type: Function,
       default: function() {}
     },
-    bitboxSelectOpen: {
-      type: Function,
-      default: function() {}
-    },
+    // bitbox02Open: {
+    //   type: Function,
+    //   default: function() {}
+    // },
   },
   data() {
     return {
@@ -137,13 +137,31 @@ export default {
           break;
         case BITBOX02_TYPE:
           // getBitBox02Wallet().then(bitbox02 => bitbox02);
+          let bb02;
           BitBox02Wallet('', this.$store.dispatch)
             .then(_newWallet => {
-              this.$emit('hardwareWalletOpen', _newWallet);
+              bb02 = _newWallet;
+              console.log('connection initialized bb02: ', bb02)
+              this.$emit('bitbox02Open', bb02);
+              bb02.connect()
+                .then(() => {
+                  console.log('connected bb02: ', bb02)
+                  this.$emit('hardwareWalletOpen', bb02);
+                })
+                .catch(e => {
+                  BitBox02Wallet.errorHandler(e);
+                });
             })
-            .catch(e => {
-              BitBox02Wallet.errorHandler(e);
-            });
+            // .then(() => {
+            //   this.$emit('hardwareWalletOpen', bb02);
+            // })
+            // .catch(e => {
+            //   BitBox02Wallet.errorHandler(e);
+            // });
+          // this.$refs.bitbox02.hide();
+          // console.log('in BITBOX02_TYPE: ', bb02.status);
+          // this.$emit('bitbox02Open', bb02.status);
+          // this.bitbox02Open(bb02);
           break;
         default:
           Toast.responseHandler(
@@ -170,3 +188,5 @@ export default {
 @import '../HardwareModal/HardwareModal-tablet.scss';
 @import '../HardwareModal/HardwareModal-mobile.scss';
 </style>
+
+
