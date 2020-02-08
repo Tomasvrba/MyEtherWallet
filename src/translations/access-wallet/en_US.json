@@ -32,7 +32,10 @@
   "bitbox": {
     "modal": {
       "title": "Select BitBox wallet"
-    }
+    },
+    "bitbox02": "BitBox02",
+    "pairing": "Please confirm the encryption pairing code matches what is shown on your BitBox02.",
+    "unlock": "Enter BitBox02 password to unlock."
   },
   "software": {
     "option-title": "Software",

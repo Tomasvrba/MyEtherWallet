@@ -1,8 +1,9 @@
 <template>
-  <div>
+  <div
+    :class="showModal ? '' : 'hidden'">
     <b-modal
       ref="bitbox02"
-      :title="$t('accessWallet.ledger.modal.title')"
+      :title="$t('accessWallet.bitbox.bitbox02')"
       hide-footer
       class="bootstrap-modal"
       centered
@@ -10,18 +11,27 @@
       lazy
       @hidden="reset"
     >
-      <div class="ledger-app-selection-container">
-        <!-- <h4>{{ $t('accessWallet.ledger.modal.text') }}</h4> -->
-        <span> {{ device.status === 'connected' ? 'Unlock your BitBox02' : device.pairingCode }} </span>
-        <div class="buttons-container">
-          <div
-            :class="[
-              device.pairingConfirmed ? '' : 'disabled',
-              'submit-button large-round-button-green-filled'
-            ]"
-            @click="device.pairingConfirmationResolve()"
-          >
-            Continue
+      <div class="bitbox-container">
+        <div v-if="device.status === 'connected'">
+          <h4>{{ $t('accessWallet.bitbox.unlock') }}</h4>
+          <div class="password-gestures-gif-wrapper">
+            <img class="password-gestures-gif" :src="imgPath" alt="Password entry GIF">
+          </div>
+        </div>
+
+        <div v-if="device.status === 'unpaired'">
+          <h4>{{ $t('accessWallet.bitbox.pairing') }}</h4>
+          <pre>{{device.pairingCode}}</pre>
+          <div class="button-container">
+            <div
+              :class="[
+                device.pairingConfirmed ? '' : 'disabled',
+                'submit-button large-round-button-green-filled'
+              ]"
+              @click="device.pairingConfirmationResolve()"
+            >
+              {{ $t('accessWallet.hardware.modal.button-choose') }}
+            </div>
           </div>
         </div>
       </div>
@@ -30,66 +40,33 @@
 </template>
 
 <script>
-import apps from '@/wallets/hardware/ledger/appPaths.js';
-import cust from '@/assets/images/icons/network.svg';
-// import {
-//   BitBox02Wallet,
-// } from '@/wallets';
-import { Toast, pathHelpers } from '@/helpers';
-import { LedgerWallet } from '@/wallets';
-import { mapState } from 'vuex';
-import { ethereum } from '@/wallets/bip44/paths';
+import { Toast } from '@/helpers';
+import bb02PwEntry from '@/assets/images/modal/bitbox02/bb02PwEntry.gif';
 export default {
   props: {
     device: {
-      // type: String,
-      // default: 'BAR'
+      type: Object,
+      default: function() {return {}}
     },
-    // status: {
-    //   type: String,
-    //   default: undefined
-    // }
   },
   data() {
     return {
-      apps: apps,
-      selectedApp: {
-        network: {
-          name_long: apps[0].network.name_long,
-          icon: apps[0].network.icon
-        },
-        paths: apps[0].paths
-      },
-      toggled: false,
-      selectedPath: apps[0].paths[0],
-      flipButton: false,
-      customLabel: '',
-      customPath: ''
+      imgPath: bb02PwEntry
     };
   },
   computed: {
-    fieldsFilled() {
-      const emptyApp = Object.keys(this.selectedApp).length;
-      return (
-        this.selected === '' &&
-        emptyApp === 0 &&
-        this.selectedPathText === 'Select Path' &&
-        this.selectedPath === ''
-      );
+    showModal() {
+      return this.device.status === 'connected' || this.device.status === 'unpaired'
     },
-    dropDownDefaultText() {
-      return `${this.selectedPath.label} - ${this.selectedPath.path}`;
-    },
-    ...mapState(['customPaths'])
   },
-  watch: {
-    device: function(newVal, oldVal) { // watch it
-      console.log('Prop changed: ', newVal, ' | was: ', oldVal)
-    }
+  // watch: {
+  //   device: function(newVal, oldVal) { // watch it
+  //     console.log('Prop changed: ', newVal, ' | was: ', oldVal)
+  //   }
     // status: function(newVal, oldVal) { // watch it
     //   console.log('Prop changed: ', newVal, ' | was: ', oldVal)
     // }
-  },
+  // },
   // mounted() {
   //   console.log('mounted')
   //   // console.log(device)

@@ -163,7 +163,7 @@ export default {
       hardwareAddresses: [],
       walletConstructor: function() {},
       hardwareBrand: '',
-      device: '',
+      device: {},
       buttons: [
         {
           func: this.mewConnectModalOpen,
@@ -266,7 +266,15 @@ export default {
       // console.log('bitbox02ModalOpen 2 bb02', bb02);
       this.device = bb02;
       // console.log('bitbox02ModalOpen 2 device', this.device);
+      // console.log('bitbox02ModalOpen device: ', this.device);
       this.$refs.bitbox02Modal.$refs.bitbox02.show();
+      // if (
+      //   this.device.status === 'unpaired' ||
+      //   this.device.status === 'connected' ||
+      //   this.device.status === 'pairingFailed'
+      // ) {
+      //   this.$refs.bitbox02Modal.$refs.bitbox02.show();
+      // }
     },
     web3WalletModal() {
       this.checkWeb3();
