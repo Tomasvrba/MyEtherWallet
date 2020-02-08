@@ -26,49 +26,11 @@ class BitBox02Wallet {
     this.logout = logout;
     this.status = undefined;
     this.pairingConfirmed = false;
-    // this.pairingConfirmationResolve = new Promise(() => 
-    //   {this.pairingConfirmed = true}
-    // )
   }
   async init(basePath) {
-    // try {
-      this.basePath = basePath ? basePath : this.supportedPaths[0].path;
-      const devicePath = await getDevicePath();
-      this.BitBox02 = new BitBox02API(devicePath);
-      // console.log(this.BitBox02)
-      // console.log(this.BitBox02.fw.Status())
-      // this.status = this.BitBox02.status;
-  
-      // await this.BitBox02.connect(
-      //   pairingCode => {
-      //     console.log('pairing', pairingCode);
-      //   },
-      //   () => {
-      //     return new Promise(resolve => {
-      //       setTimeout(resolve, 10000)});
-      //   },
-      //   attestationResult => {
-      //     this.attestation = attestationResult;
-      //   },
-      //   () => {
-      //     this.logout('clearWallet');
-      //   }
-      // )
-  
-      // if (this.BitBox02.fw.Product() !== api.common.Product.BitBox02Multi) {
-      //   throw new Error('Unsupported device');
-      // }
-  
-      // const rootPub = await this.BitBox02.getRootPubKey();
-      // this.hdKey = HDKey.fromExtendedKey(rootPub);
-  
-      // if (!this.attestation) {
-      //   errorHandler('Attestation failed');
-      // }
-
-    // } catch (e) {
-      // console.log(e)
-    // }
+    this.basePath = basePath ? basePath : this.supportedPaths[0].path;
+    const devicePath = await getDevicePath();
+    this.BitBox02 = new BitBox02API(devicePath);
   }
 
   async connect() {
@@ -77,9 +39,7 @@ class BitBox02Wallet {
         this.pairingCode = pairingCode;
       },
       async () => {
-        // await this.pairingConfirmationPromise()
         return new Promise(resolve => {
-          // setTimeout(resolve, 10000)}
           this.pairingConfirmed = true;
           this.pairingConfirmationResolve = resolve;
         });
@@ -92,7 +52,6 @@ class BitBox02Wallet {
       },
       status => {
         this.status = status;
-        console.log('Received status: ', this.status);
       }
     )
 
