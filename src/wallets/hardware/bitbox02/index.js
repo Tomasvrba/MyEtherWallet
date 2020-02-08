@@ -1,4 +1,4 @@
-import { BitBox02API, getDevicePath, api } from '../../../../node_modules/aaa-bb02/bitbox02.js';
+import { BitBox02API, getDevicePath, api, sanitizeEthTransactionData } from 'bitbox02-api';
 
 import { BITBOX as bitboxType } from '../../bip44/walletTypes';
 import bip44Paths from '../../bip44';
@@ -35,7 +35,7 @@ class BitBox02Wallet {
       this.basePath = basePath ? basePath : this.supportedPaths[0].path;
       const devicePath = await getDevicePath();
       this.BitBox02 = new BitBox02API(devicePath);
-      console.log(this.BitBox02)
+      // console.log(this.BitBox02)
       // console.log(this.BitBox02.fw.Status())
       // this.status = this.BitBox02.status;
   
@@ -100,7 +100,7 @@ class BitBox02Wallet {
       throw new Error('Unsupported device');
     }
 
-    const rootPub = await this.BitBox02.getRootPubKey();
+    const rootPub = await this.BitBox02.ethGetRootPubKey();
     this.hdKey = HDKey.fromExtendedKey(rootPub);
 
     if (!this.attestation) {
@@ -121,7 +121,8 @@ class BitBox02Wallet {
         tx: getHexTxObject(tx),
         data: tx.data
       }
-      const result = await this.BitBox02.signTransaction(signatureData);
+      const sanitizedData = sanitizeEthTransactionData(signatureData)
+      const result = await this.BitBox02.ethSignTransaction(sanitizedData);
       tx.r = result.r
       tx.s = result.s
       tx.v = result.v
@@ -139,7 +140,7 @@ class BitBox02Wallet {
     };
 
     const msgSigner = async msg => {
-      const result = await this.BitBox02.signMessage({
+      const result = await this.BitBox02.ethSignMessage({
         account: idx,
         message: Misc.toBuffer(msg)
       });
@@ -151,7 +152,7 @@ class BitBox02Wallet {
     };
 
     const displayAddress = async () => {
-      await this.BitBox02.displayEthAddress(idx);
+      await this.BitBox02.ethDisplayAddress(idx);
     };
 
     return new HDWalletInterface(

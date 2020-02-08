@@ -152,16 +152,9 @@ export default {
                   BitBox02Wallet.errorHandler(e);
                 });
             })
-            // .then(() => {
-            //   this.$emit('hardwareWalletOpen', bb02);
-            // })
-            // .catch(e => {
-            //   BitBox02Wallet.errorHandler(e);
-            // });
-          // this.$refs.bitbox02.hide();
-          // console.log('in BITBOX02_TYPE: ', bb02.status);
-          // this.$emit('bitbox02Open', bb02.status);
-          // this.bitbox02Open(bb02);
+            .catch(e => {
+                  BitBox02Wallet.errorHandler(e);
+                });
           break;
         default:
           Toast.responseHandler(
