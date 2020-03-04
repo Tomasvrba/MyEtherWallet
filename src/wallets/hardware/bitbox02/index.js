@@ -1,20 +1,11 @@
-import {
-  BitBox02API,
-  getDevicePath,
-  api,
-  sanitizeEthTransactionData
-} from 'bitbox02-api';
+import { BitBox02API, getDevicePath, api } from 'bitbox02-api';
 
 import { BITBOX02 as bitbox02Type } from '../../bip44/walletTypes';
 import bip44Paths from '../../bip44';
 import HDWalletInterface from '@/wallets/HDWalletInterface';
 import * as HDKey from 'hdkey';
 import { Transaction } from 'ethereumjs-tx';
-import {
-  getSignTransactionObject,
-  getHexTxObject,
-  calculateChainIdFromV
-} from '../../utils';
+import { getSignTransactionObject, calculateChainIdFromV } from '../../utils';
 import errorHandler from './errorHandler';
 import store from '@/store';
 import commonGenerator from '@/helpers/commonGenerator';
@@ -79,17 +70,15 @@ class BitBox02Wallet {
         common: commonGenerator(store.state.main.network)
       });
       const networkId = tx.getChainId();
-      const signatureData = {
+      const signingData = {
         keypath: this.basePath + '/' + idx,
-        recipient: tx.to,
-        tx: getHexTxObject(tx),
-        data: tx.data
+        chainId: tx.getChainId(),
+        tx: tx
       };
-      const sanitizedData = sanitizeEthTransactionData(signatureData);
-      const result = await this.BitBox02.ethSignTransaction(sanitizedData);
-      tx.r = result.r;
-      tx.s = result.s;
-      tx.v = result.v;
+      const result = await this.BitBox02.ethSignTransaction(signingData);
+      tx.r = new Buffer(result.r);
+      tx.s = new Buffer(result.s);
+      tx.v = new Buffer(result.v);
 
       const signedChainId = calculateChainIdFromV(tx.v);
       if (signedChainId !== networkId)
@@ -108,7 +97,11 @@ class BitBox02Wallet {
         account: idx,
         message: Misc.toBuffer(msg)
       });
-      return Buffer.concat([result.r, result.s, result.v]);
+      return Buffer.concat([
+        new Buffer(result.r),
+        new Buffer(result.s),
+        new Buffer(result.v)
+      ]);
     };
 
     const displayAddress = async () => {
